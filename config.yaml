@@ -1,0 +1,68 @@
+# Crypto Time-Series Forecasting Configuration
+
+seed: 42
+
+data:
+  symbol: "BTC/USDT"
+  interval: "1d"
+  since: "2020-01-01T00:00:00Z" # CCXT start date (ISO 8601)
+  cache_path: "data/cache"
+  static_csv: "data/btc_usdt_daily.csv" # bundled fallback dataset
+
+preprocessing:
+  fill_method: "ffill" # forward-fill then back-fill for remaining
+
+features:
+  # Technical indicator windows
+  sma_windows: [7, 21, 50]
+  ema_windows: [12, 26]
+  rsi_window: 14
+  atr_window: 14
+  bb_window: 20
+  bb_std: 2.0
+  macd_fast: 12
+  macd_slow: 26
+  macd_signal: 9
+  return_lags: [1, 3, 7, 14]
+  volume_sma_windows: [7, 21]
+
+dataset:
+  lookback: 60 # input sequence length (trading days)
+  horizon: 5 # predict next N candles
+  target: "return_1" # predict returns (stationary) rather than raw price
+  train_ratio: 0.7
+  val_ratio: 0.15 # remaining 0.15 is test
+  scaling: "standard" # standard | minmax
+
+model:
+  type: "lstm" # lstm | baseline
+  hidden_size: 64
+  num_layers: 2
+  dropout: 0.2
+  bidirectional: false
+
+training:
+  epochs: 50
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  patience: 10 # early stopping patience
+  scheduler_factor: 0.5
+  scheduler_patience: 5
+  gradient_clip: 1.0
+
+baselines:
+  ridge_alpha: 1.0
+  gbt_n_estimators: 200
+  gbt_max_depth: 4
+  gbt_learning_rate: 0.05
+  gbt_subsample: 0.8
+
+evaluation:
+  walk_forward_steps: 5 # number of walk-forward windows
+  plot_output_dir: "outputs/plots"
+  metrics_output_dir: "outputs/metrics"
+
+logging:
+  level: "INFO"
+  file: "outputs/run.log"
