@@ -1,0 +1,11 @@
+[MASTER]
+ignore = __pycache__, .venv, venv
+
+[FORMAT]
+max-line-length = 100
+
+[MESSAGES CONTROL]
+disable = C0114, C0115, C0116, R0903
+
+[SIMILARITIES]
+min-similarity-lines = 6
