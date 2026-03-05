@@ -127,7 +127,13 @@ def train_model(
         if epoch % 5 == 0 or epoch == 1 or marker:
             logger.info(
                 "Epoch %3d/%d | train_loss=%.6f | val_loss=%.6f | lr=%.6f | %.1fs%s",
-                epoch, epochs, avg_train_loss, avg_val_loss, current_lr, elapsed, marker,
+                epoch,
+                epochs,
+                avg_train_loss,
+                avg_val_loss,
+                current_lr,
+                elapsed,
+                marker,
             )
 
         if early_stopping.step(avg_val_loss):

@@ -57,9 +57,7 @@ def add_rsi(df: pd.DataFrame, window: int = 14) -> pd.DataFrame:
     return df
 
 
-def add_bollinger_bands(
-    df: pd.DataFrame, window: int = 20, num_std: float = 2.0
-) -> pd.DataFrame:
+def add_bollinger_bands(df: pd.DataFrame, window: int = 20, num_std: float = 2.0) -> pd.DataFrame:
     sma = df["close"].rolling(window=window).mean()
     std = df["close"].rolling(window=window).std()
     upper = sma + num_std * std
