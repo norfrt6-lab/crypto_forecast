@@ -8,6 +8,8 @@ Data source priority:
    so the reviewer can always run the pipeline without network access.
 """
 
+from __future__ import annotations
+
 import logging
 import time
 from pathlib import Path

@@ -9,6 +9,8 @@ Handles the PyTorch training loop with:
 - Detailed epoch-level logging
 """
 
+from __future__ import annotations
+
 import logging
 import time
 

@@ -8,6 +8,8 @@ Generates publication-quality plots for model evaluation:
 - Model comparison bar charts
 """
 
+from __future__ import annotations
+
 import logging
 from pathlib import Path
 

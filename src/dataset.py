@@ -12,6 +12,8 @@ Data leakage prevention:
 4. No future information leaks into feature computation (handled in features.py).
 """
 
+from __future__ import annotations
+
 import logging
 from dataclasses import dataclass
 
