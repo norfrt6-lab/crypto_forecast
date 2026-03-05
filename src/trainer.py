@@ -11,7 +11,6 @@ Handles the PyTorch training loop with:
 
 import logging
 import time
-from pathlib import Path
 
 import numpy as np
 import torch
