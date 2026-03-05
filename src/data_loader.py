@@ -53,9 +53,7 @@ def _fetch_ccxt(
             break
         time.sleep(0.5)
 
-    df = pd.DataFrame(
-        all_candles, columns=["timestamp", "open", "high", "low", "close", "volume"]
-    )
+    df = pd.DataFrame(all_candles, columns=["timestamp", "open", "high", "low", "close", "volume"])
     df["date"] = pd.to_datetime(df["timestamp"], unit="ms")
     df = df.set_index("date")[["open", "high", "low", "close", "volume"]]
     df.index.name = "date"
@@ -86,7 +84,9 @@ def load_ohlcv(
             df = pd.read_csv(cache_file, index_col="date", parse_dates=True)
             logger.info(
                 "Loaded %d rows (%s to %s)",
-                len(df), df.index.min().date(), df.index.max().date(),
+                len(df),
+                df.index.min().date(),
+                df.index.max().date(),
             )
             return df
 
@@ -98,7 +98,9 @@ def load_ohlcv(
             raise ValueError("CCXT returned no data")
         logger.info(
             "Downloaded %d rows (%s to %s)",
-            len(df), df.index.min().date(), df.index.max().date(),
+            len(df),
+            df.index.min().date(),
+            df.index.max().date(),
         )
         if cache_path:
             df.to_csv(cache_file)
@@ -121,11 +123,12 @@ def load_ohlcv(
         df = pd.read_csv(csv_path, index_col="date", parse_dates=True)
         logger.info(
             "Loaded %d rows (%s to %s)",
-            len(df), df.index.min().date(), df.index.max().date(),
+            len(df),
+            df.index.min().date(),
+            df.index.max().date(),
         )
         return df
 
     raise RuntimeError(
-        "All data sources failed. Ensure network access for CCXT, or place a "
-        f"CSV at {csv_path}"
+        "All data sources failed. Ensure network access for CCXT, or place a " f"CSV at {csv_path}"
     )

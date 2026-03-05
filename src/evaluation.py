@@ -49,22 +49,18 @@ def predict_with_model(
     return np.concatenate(preds, axis=0)
 
 
-def compute_direction_accuracy_returns(
-    y_true: np.ndarray, y_pred: np.ndarray
-) -> float:
+def compute_direction_accuracy_returns(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """
     Direction accuracy when target is returns.
 
     Each value is already a return — its sign directly indicates
     whether price went up (>0) or down (<0).
     """
-    correct = (np.sign(y_true) == np.sign(y_pred))
+    correct = np.sign(y_true) == np.sign(y_pred)
     return float(correct.mean())
 
 
-def compute_direction_accuracy_price(
-    y_true: np.ndarray, y_pred: np.ndarray
-) -> float:
+def compute_direction_accuracy_price(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     """
     Direction accuracy when target is raw price.
 
@@ -123,15 +119,13 @@ def compute_metrics(
         direction_acc = compute_direction_accuracy_price(y_true, y_pred)
 
     horizon = y_true.shape[1]
-    per_step_mse = np.array([
-        mean_squared_error(y_true[:, k], y_pred[:, k]) for k in range(horizon)
-    ])
-    per_step_mae = np.array([
-        mean_absolute_error(y_true[:, k], y_pred[:, k]) for k in range(horizon)
-    ])
-    per_step_dir_acc = compute_per_step_direction_accuracy(
-        y_true, y_pred, target_is_return
+    per_step_mse = np.array(
+        [mean_squared_error(y_true[:, k], y_pred[:, k]) for k in range(horizon)]
     )
+    per_step_mae = np.array(
+        [mean_absolute_error(y_true[:, k], y_pred[:, k]) for k in range(horizon)]
+    )
+    per_step_dir_acc = compute_per_step_direction_accuracy(y_true, y_pred, target_is_return)
 
     return Metrics(
         mse=mse,
@@ -152,9 +146,7 @@ def inverse_transform_predictions(
     n_samples, horizon = y_scaled.shape
     result = np.zeros_like(y_scaled)
     for k in range(horizon):
-        result[:, k] = target_scaler.inverse_transform(
-            y_scaled[:, k].reshape(-1, 1)
-        ).flatten()
+        result[:, k] = target_scaler.inverse_transform(y_scaled[:, k].reshape(-1, 1)).flatten()
     return result
 
 
@@ -192,13 +184,18 @@ def evaluate_split(
     logger.info(
         "[%s] Scaled — MSE=%.6f, MAE=%.6f, RMSE=%.6f, DirAcc=%.2f%%",
         split_name,
-        scaled_metrics.mse, scaled_metrics.mae, scaled_metrics.rmse,
+        scaled_metrics.mse,
+        scaled_metrics.mae,
+        scaled_metrics.rmse,
         scaled_metrics.direction_accuracy * 100,
     )
     logger.info(
         "[%s] %s  — MSE=%.6f, MAE=%.6f, RMSE=%.6f, DirAcc=%.2f%%",
-        split_name, unit,
-        orig_metrics.mse, orig_metrics.mae, orig_metrics.rmse,
+        split_name,
+        unit,
+        orig_metrics.mse,
+        orig_metrics.mae,
+        orig_metrics.rmse,
         orig_metrics.direction_accuracy * 100,
     )
 
@@ -266,7 +263,11 @@ def walk_forward_evaluate(
 
         logger.info(
             "Walk-forward step %d/%d — RMSE=%.6f, MAE=%.6f, DirAcc=%.2f%%",
-            i + 1, n_steps, metrics.rmse, metrics.mae, metrics.direction_accuracy * 100,
+            i + 1,
+            n_steps,
+            metrics.rmse,
+            metrics.mae,
+            metrics.direction_accuracy * 100,
         )
 
     return all_metrics
