@@ -12,6 +12,7 @@ import logging
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")  # Non-interactive backend for reproducibility
 import matplotlib.pyplot as plt  # noqa: E402
 import matplotlib.dates as mdates  # noqa: E402
@@ -57,11 +58,17 @@ def plot_predictions_vs_actual(
     out = _ensure_dir(output_dir)
     fig, ax = plt.subplots()
 
-    x_axis = dates[:len(y_true)] if dates is not None else np.arange(len(y_true))
+    x_axis = dates[: len(y_true)] if dates is not None else np.arange(len(y_true))
 
     ax.plot(x_axis, y_true[:, step], label="Actual", linewidth=1.5, color="#2196F3")
-    ax.plot(x_axis, y_pred[:, step], label=f"{model_name} Predicted", linewidth=1.2,
-            color="#FF5722", alpha=0.85)
+    ax.plot(
+        x_axis,
+        y_pred[:, step],
+        label=f"{model_name} Predicted",
+        linewidth=1.2,
+        color="#FF5722",
+        alpha=0.85,
+    )
 
     ax.set_title(f"{target_label}: Actual vs {model_name} (t+{step + 1})")
     ax.set_ylabel(target_label)
@@ -97,13 +104,12 @@ def plot_all_horizon_steps(
         axes = np.array([axes])
     axes = axes.flatten()
 
-    x_axis = dates[:len(y_true)] if dates is not None else np.arange(len(y_true))
+    x_axis = dates[: len(y_true)] if dates is not None else np.arange(len(y_true))
 
     for k in range(horizon):
         ax = axes[k]
         ax.plot(x_axis, y_true[:, k], label="Actual", linewidth=1.2, color="#2196F3")
-        ax.plot(x_axis, y_pred[:, k], label="Predicted", linewidth=1.0,
-                color="#FF5722", alpha=0.8)
+        ax.plot(x_axis, y_pred[:, k], label="Predicted", linewidth=1.0, color="#FF5722", alpha=0.8)
         ax.set_title(f"t+{k + 1}")
         ax.set_ylabel(target_label)
         ax.legend(fontsize=8)
@@ -199,7 +205,7 @@ def plot_model_comparison(
 
     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
-    colors = ["#2196F3", "#FF5722", "#4CAF50", "#9C27B0", "#FF9800", "#607D8B"][:len(model_names)]
+    colors = ["#2196F3", "#FF5722", "#4CAF50", "#9C27B0", "#FF9800", "#607D8B"][: len(model_names)]
 
     for ax, values, title, ylabel in [
         (axes[0], rmses, "RMSE", metric_unit),

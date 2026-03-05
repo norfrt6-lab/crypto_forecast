@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class SplitArrays:
     """Container for train/val/test numpy arrays (pre-tensor)."""
+
     X_train: np.ndarray
     y_train: np.ndarray
     X_val: np.ndarray
@@ -107,9 +108,15 @@ def temporal_split(
 
     logger.info(
         "Temporal split: train=%d (%s to %s), val=%d (%s to %s), test=%d (%s to %s)",
-        len(train_df), train_df.index[0].date(), train_df.index[-1].date(),
-        len(val_df), val_df.index[0].date(), val_df.index[-1].date(),
-        len(test_df), test_df.index[0].date(), test_df.index[-1].date(),
+        len(train_df),
+        train_df.index[0].date(),
+        train_df.index[-1].date(),
+        len(val_df),
+        val_df.index[0].date(),
+        val_df.index[-1].date(),
+        len(test_df),
+        test_df.index[0].date(),
+        test_df.index[-1].date(),
     )
     return train_df, val_df, test_df
 
@@ -172,8 +179,11 @@ def build_splits(df: pd.DataFrame, cfg: dict) -> SplitArrays:
 
     logger.info(
         "Sequences — train: %d, val: %d, test: %d  |  shape: X=%s, y=%s",
-        len(X_train), len(X_val), len(X_test),
-        X_train.shape, y_train.shape,
+        len(X_train),
+        len(X_val),
+        len(X_test),
+        X_train.shape,
+        y_train.shape,
     )
 
     return SplitArrays(
