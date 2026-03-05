@@ -13,10 +13,10 @@ from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")  # Non-interactive backend for reproducibility
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import numpy as np
-import pandas as pd
+import matplotlib.pyplot as plt  # noqa: E402
+import matplotlib.dates as mdates  # noqa: E402
+import numpy as np  # noqa: E402
+import pandas as pd  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
