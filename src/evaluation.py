@@ -14,7 +14,7 @@ from dataclasses import dataclass
 
 import numpy as np
 import torch
-from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 from torch.utils.data import DataLoader
 
 from .dataset import TimeSeriesDataset, create_sequences

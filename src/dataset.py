@@ -18,8 +18,8 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 import torch
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from torch.utils.data import Dataset, DataLoader
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from torch.utils.data import DataLoader, Dataset
 
 logger = logging.getLogger(__name__)
 
